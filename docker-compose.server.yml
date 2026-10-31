@@ -1,0 +1,30 @@
+services:
+  e-learning-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: e-learning-dashboard:latest
+    container_name: e-learning-dashboard
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      HOST: 0.0.0.0
+      PORT: 4178
+      MONGODB_DATABASE: your-idea-builder
+    expose:
+      - "4178"
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=opt_default
+      - traefik.http.routers.e-learning-dashboard.rule=Host(`elearning.srv1707839.hstgr.cloud`)
+      - traefik.http.routers.e-learning-dashboard.entrypoints=websecure
+      - traefik.http.routers.e-learning-dashboard.tls=true
+      - traefik.http.routers.e-learning-dashboard.tls.certresolver=letsencrypt
+      - traefik.http.services.e-learning-dashboard.loadbalancer.server.port=4178
+    networks:
+      - opt_default
+
+networks:
+  opt_default:
+    external: true

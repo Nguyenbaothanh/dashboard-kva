@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f5f1" />
+    <title>Doanh thu khóa học | E-learning</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="rail" aria-label="Điều hướng">
+        <a class="brand-mark" href="#overview" aria-label="E-learning dashboard">EL</a>
+        <div class="rail-rule"></div>
+        <a class="rail-link active" href="#overview" aria-label="Tổng quan" title="Tổng quan">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="8" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="15" width="7" height="6" rx="1.5"/></svg>
+        </a>
+        <a class="rail-link" href="#courses" aria-label="Khóa học" title="Khóa học">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 8 9-5 9 5-9 5-9-5Z"/><path d="M6 10v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5M21 8v7"/></svg>
+        </a>
+        <a class="rail-link" href="#orders" aria-label="Đơn hàng" title="Đơn hàng">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10l3 3v15H4V3h3Z"/><path d="M8 11h8M8 15h8M8 7h4"/></svg>
+        </a>
+        <div class="rail-bottom"><span class="live-dot"></span></div>
+      </aside>
+
+      <main id="overview" class="main">
+        <header class="topbar">
+          <div class="brand-lockup"><span class="brand-eyebrow">E-LEARNING / INSIGHTS</span><span class="brand-title">Bảng điều khiển</span></div>
+          <div class="top-actions">
+            <span class="updated"><span class="live-dot"></span><span id="updated-at">Đang kết nối</span></span>
+            <button id="refresh" class="icon-button" type="button" title="Làm mới dữ liệu" aria-label="Làm mới dữ liệu">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.7 9A7 7 0 0 1 18 6l2 2M4 16l2 2a7 7 0 0 0 12.3-3"/></svg>
+            </button>
+            <div class="avatar" aria-label="Quản trị viên">A</div>
+          </div>
+        </header>
+
+        <section class="page-heading">
+          <div>
+            <p class="kicker"><span class="kicker-line"></span> HIỆU SUẤT KINH DOANH</p>
+            <h1>Doanh thu <em>đang đi đâu?</em></h1>
+            <p class="heading-note">Theo dõi doanh thu đã duyệt và số khóa học được bán.</p>
+          </div>
+          <div class="dashboard-filters">
+            <div class="range-control" role="group" aria-label="Chọn nhanh khoảng thời gian">
+              <button type="button" data-range="today">Hôm nay</button>
+              <button type="button" data-range="yesterday">Hôm qua</button>
+              <button type="button" data-range="30d">30 ngày</button>
+              <button type="button" data-range="90d">90 ngày</button>
+              <button type="button" data-range="year">Năm nay</button>
+              <button type="button" data-range="all" class="selected">Toàn bộ</button>
+            </div>
+            <form id="custom-date-form" class="custom-date-controls">
+              <label>
+                <span>Từ ngày</span>
+                <input id="date-start" name="startDate" type="date" required />
+              </label>
+              <span class="date-separator" aria-hidden="true">—</span>
+              <label>
+                <span>Đến ngày</span>
+                <input id="date-end" name="endDate" type="date" required />
+              </label>
+              <button type="submit" class="apply-date-button">Áp dụng</button>
+            </form>
+          </div>
+        </section>
+
+        <div id="error-banner" class="error-banner" role="alert" hidden></div>
+
+        <section class="metrics" aria-label="Chỉ số bán hàng">
+          <article class="metric metric-revenue">
+            <div class="metric-top"><span class="metric-label">TỔNG DOANH THU</span><span class="metric-glyph">↗</span></div>
+            <strong id="revenue" class="metric-value">—</strong>
+            <span class="metric-foot">Đơn hàng đã duyệt</span>
+            <span id="revenue-change" class="metric-change"></span>
+            <div class="metric-accent"></div>
+          </article>
+          <article class="metric">
+            <div class="metric-top"><span class="metric-label">KHÓA HỌC ĐÃ BÁN</span><span class="metric-symbol symbol-green">▤</span></div>
+            <strong id="units" class="metric-value">—</strong>
+            <span class="metric-foot">Lượt ghi danh đã duyệt</span>
+            <span id="units-change" class="metric-change"></span>
+          </article>
+          <article class="metric">
+            <div class="metric-top"><span class="metric-label">ĐƠN ĐÃ DUYỆT</span><span class="metric-symbol symbol-blue">✓</span></div>
+            <strong id="orders" class="metric-value">—</strong>
+            <span class="metric-foot">Giao dịch thành công</span>
+            <span id="orders-change" class="metric-change"></span>
+          </article>
+          <article class="metric metric-pending">
+            <div class="metric-top"><span class="metric-label">ĐANG CHỜ DUYỆT</span><span class="metric-symbol symbol-amber">◷</span></div>
+            <strong id="pending" class="metric-value">—</strong>
+            <span class="metric-foot">Không tính vào doanh thu</span>
+          </article>
+        </section>
+
+        <section class="analysis-grid">
+          <article class="panel trend-panel">
+            <div class="panel-heading">
+              <div><p class="panel-kicker">DOANH THU THEO THỜI GIAN</p><h2>Dòng tiền ghi nhận</h2></div>
+              <span class="panel-unit">VND <span class="unit-dot"></span> ĐÃ DUYỆT</span>
+            </div>
+            <div id="trend-chart" class="trend-chart" role="img" aria-label="Biểu đồ doanh thu theo tháng"></div>
+            <div class="chart-footer"><span><i class="legend-dot"></i> Doanh thu</span><span id="trend-caption">Theo tháng</span></div>
+          </article>
+
+          <article id="courses" class="panel courses-panel">
+            <div class="panel-heading">
+              <div><p class="panel-kicker">XẾP HẠNG</p><h2>Khóa học nổi bật</h2></div>
+              <span class="count-pill" id="course-count">0 khóa</span>
+            </div>
+            <div id="course-list" class="course-list"></div>
+            <div class="panel-footnote">Xếp theo số lượt bán đã duyệt</div>
+          </article>
+        </section>
+
+        <section id="course-catalog" class="panel catalog-panel">
+          <div class="panel-heading catalog-heading">
+            <div><p class="panel-kicker">QUẢN LÝ DANH MỤC</p><h2>Tất cả khóa học</h2></div>
+            <span class="count-pill" id="catalog-count">0 khóa</span>
+          </div>
+          <p class="catalog-note">Doanh thu bên dưới là tổng giá lưu trong từng lượt ghi danh, có thể khác tổng tiền đơn khi áp dụng giảm giá.</p>
+          <div class="catalog-controls">
+            <label class="catalog-search">
+              <span class="visually-hidden">Tìm khóa học</span>
+              <input id="course-search" type="search" placeholder="Tìm tên hoặc danh mục…" autocomplete="off" />
+            </label>
+            <label>
+              <span class="visually-hidden">Lọc trạng thái khóa học</span>
+              <select id="course-status-filter">
+                <option value="all">Mọi trạng thái</option>
+              </select>
+            </label>
+            <label>
+              <span class="visually-hidden">Sắp xếp khóa học</span>
+              <select id="course-sort">
+                <option value="revenue">Sắp xếp: Doanh thu</option>
+                <option value="sold">Sắp xếp: Lượt bán</option>
+                <option value="updated">Sắp xếp: Cập nhật mới</option>
+                <option value="name">Sắp xếp: Tên A–Z</option>
+              </select>
+            </label>
+          </div>
+          <div class="table-wrap catalog-table-wrap">
+            <table class="catalog-table">
+              <thead>
+                <tr><th>KHÓA HỌC</th><th>DANH MỤC</th><th>TRẠNG THÁI</th><th class="align-right">GIÁ HIỆN TẠI</th><th class="align-right">LƯỢT BÁN</th><th class="align-right">GIÁ TRỊ GHI NHẬN</th><th>CẬP NHẬT</th></tr>
+              </thead>
+              <tbody id="catalog-rows"><tr><td colspan="7" class="loading-cell">Đang tải danh mục…</td></tr></tbody>
+            </table>
+          </div>
+          <div id="catalog-empty" class="catalog-empty" hidden>Không tìm thấy khóa học phù hợp.</div>
+        </section>
+
+        <section id="orders" class="panel orders-panel">
+          <div class="panel-heading order-heading">
+            <div><p class="panel-kicker">GIAO DỊCH MỚI</p><h2>Đơn hàng gần đây</h2></div>
+            <span class="secure-note"><span class="secure-mark">●</span> Dữ liệu người mua được ẩn</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>KHÓA HỌC</th><th>NGÀY GHI NHẬN</th><th>TRẠNG THÁI</th><th class="align-right">THÀNH TIỀN</th></tr></thead>
+              <tbody id="recent-orders"><tr><td colspan="4" class="loading-cell">Đang tải dữ liệu…</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <footer class="page-footer"><span>SALES OVERVIEW <b>·</b> YOUR-IDEA-BUILDER</span><span id="period-label">—</span></footer>
+      </main>
+    </div>
+  </body>
+</html>
