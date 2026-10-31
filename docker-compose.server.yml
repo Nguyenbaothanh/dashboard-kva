@@ -1,9 +1,6 @@
 services:
   e-learning-dashboard:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: e-learning-dashboard:latest
+    image: owlgroup/e-learning-dashboard:latest
     container_name: e-learning-dashboard
     restart: unless-stopped
     env_file:
